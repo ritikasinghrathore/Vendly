@@ -1,0 +1,42 @@
+{
+  "name": "vendly",
+  "version": "1.0.0",
+  "private": true,
+  "main": "expo-router/entry",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "test": "tsx --test __tests__/money.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@expo-google-fonts/dancing-script": "latest",
+    "@expo-google-fonts/mulish": "latest",
+    "@expo/vector-icons": "latest",
+    "base64-arraybuffer": "^1.0.2",
+    "expo": "~57.0.0",
+    "expo-constants": "latest",
+    "expo-crypto": "latest",
+    "expo-font": "latest",
+    "expo-image-picker": "latest",
+    "expo-linking": "latest",
+    "expo-print": "latest",
+    "expo-router": "latest",
+    "expo-secure-store": "latest",
+    "expo-splash-screen": "latest",
+    "expo-status-bar": "latest",
+    "expo-web-browser": "latest",
+    "react": "19.2.3",
+    "react-native": "0.86.3",
+    "react-native-reanimated": "latest",
+    "react-native-safe-area-context": "latest",
+    "react-native-screens": "latest",
+    "react-native-worklets": "latest"
+  },
+  "devDependencies": {
+    "@types/react": "latest",
+    "tsx": "^4.19.0",
+    "typescript": "^5.9.0"
+  }
+}

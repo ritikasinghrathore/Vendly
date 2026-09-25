@@ -1,0 +1,37 @@
+{
+  "expo": {
+    "name": "Vendly",
+    "slug": "vendly",
+    "scheme": "vendly",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.vendly.app"
+    },
+    "android": {
+      "package": "com.vendly.app",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#E8DDF5"
+      }
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-font",
+      "expo-web-browser",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 220,
+          "backgroundColor": "#FBF4F7"
+        }
+      ],
+      ["expo-image-picker", { "photosPermission": "Vendly needs your photos so you can add a picture of your shop or product." }]
+    ]
+  }
+}
