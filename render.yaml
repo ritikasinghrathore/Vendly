@@ -12,7 +12,7 @@ services:
     runtime: node
     rootDir: backend
     plan: free
-    buildCommand: npm ci && npm run build
+    buildCommand: npm ci --include=dev && npm run build
     startCommand: node dist/db/migrate.js && node dist/server.js
     healthCheckPath: /health
     envVars:
