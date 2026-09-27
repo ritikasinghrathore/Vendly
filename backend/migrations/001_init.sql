@@ -21,8 +21,6 @@ create type list_status             as enum ('draft','submitted','viewed','compl
 create type pay_status              as enum ('paid','unpaid','partially_paid');
 create type txn_type                as enum ('bill','payment','adjustment','refund');
 create type pay_method              as enum ('cash','upi','card','other');
-create type subscription_status     as enum ('incomplete','trial','active','past_due','cancelled','expired');
-create type platform_payment_status as enum ('created','authorized','captured','failed','refunded');
 
 -- ---------------------------------------------------------------- identity
 create table users (
@@ -269,7 +267,7 @@ create table bill_items (
 );
 create index bill_items_bill_idx on bill_items (bill_id);
 
--- Money a customer hands to a shop (NOT the Vendly subscription: see "payments" below).
+-- Money a customer hands to a shop.
 create table customer_payments (
   id               uuid primary key default gen_random_uuid(),
   shop_id          uuid not null references shops (id) on delete restrict,
@@ -314,73 +312,6 @@ create table khata_transactions (
 create index khata_customer_idx on khata_transactions (shop_customer_id, created_at desc);
 create index khata_shop_idx     on khata_transactions (shop_id);
 
--- ---------------------------------------------------------------- Vendly subscription (shopkeeper plan)
--- The SERVER is the only authority. Rows change only from verified payment-provider webhooks
--- (or the expiry job). The mobile app can never write here.
-create table subscriptions (
-  id                       uuid primary key default gen_random_uuid(),
-  user_id                  uuid not null references users (id) on delete restrict,
-  shop_id                  uuid not null references shops (id) on delete restrict,
-  plan_code                text not null default 'vendly_shopkeeper_pro',
-  status                   subscription_status not null default 'incomplete',
-  provider                 text not null,
-  provider_customer_id     text,
-  provider_subscription_id text,
-  checkout_url             text,
-  checkout_created_at      timestamptz,
-  started_at               timestamptz,
-  current_period_start     timestamptz,
-  current_period_end       timestamptz,          -- renewal date
-  trial_ends_at            timestamptz,
-  access_until             timestamptz,          -- shop management works while now() < access_until
-  cancel_at_period_end     boolean not null default false,
-  cancelled_at             timestamptz,
-  last_event_at            timestamptz,          -- newest provider event applied (ignores late, out-of-order events)
-  created_at               timestamptz not null default now(),
-  updated_at               timestamptz not null default now(),
-  unique (shop_id)
-);
-create unique index subscriptions_provider_sub_uq on subscriptions (provider, provider_subscription_id)
-  where provider_subscription_id is not null;
-create index subscriptions_access_idx on subscriptions (access_until);
-create index subscriptions_status_idx on subscriptions (status);
-create index subscriptions_user_idx   on subscriptions (user_id);
-
--- Payments made TO Vendly. No card, UPI or bank details are ever stored: the provider holds those.
-create table payments (
-  id                  uuid primary key default gen_random_uuid(),
-  subscription_id     uuid references subscriptions (id) on delete restrict,
-  user_id             uuid not null references users (id) on delete restrict,
-  shop_id             uuid not null references shops (id) on delete restrict,
-  provider            text not null,
-  provider_payment_id text not null,
-  amount_paise        integer not null check (amount_paise >= 0),
-  currency            text not null default 'INR',
-  status              platform_payment_status not null,
-  method              text,
-  failure_code        text,
-  failure_reason      text,
-  paid_at             timestamptz,
-  created_at          timestamptz not null default now(),
-  updated_at          timestamptz not null default now(),
-  unique (provider, provider_payment_id)
-);
-create index payments_subscription_idx on payments (subscription_id, created_at desc);
-create index payments_shop_idx         on payments (shop_id, created_at desc);
-
--- Every webhook we accept (signature already verified). event_id makes processing idempotent.
-create table payment_events (
-  id           uuid primary key default gen_random_uuid(),
-  provider     text not null,
-  event_id     text not null,
-  event_type   text not null,
-  payload      jsonb not null,           -- card / UPI details are stripped before storing
-  received_at  timestamptz not null default now(),
-  processed_at timestamptz,
-  unique (provider, event_id)
-);
-create index payment_events_type_idx on payment_events (event_type, received_at desc);
-
 create table notifications (
   id         uuid primary key default gen_random_uuid(),
   user_id    uuid not null references users (id) on delete cascade,
@@ -407,7 +338,6 @@ create trigger inventory_touch      before update on inventory       for each ro
 create trigger shop_customers_touch before update on shop_customers for each row execute function touch_updated_at();
 create trigger lists_touch          before update on shopping_lists  for each row execute function touch_updated_at();
 create trigger bills_touch          before update on bills           for each row execute function touch_updated_at();
-create trigger subscriptions_touch  before update on subscriptions   for each row execute function touch_updated_at();
 create trigger payments_touch       before update on payments        for each row execute function touch_updated_at();
 
 -- Money records are permanent.

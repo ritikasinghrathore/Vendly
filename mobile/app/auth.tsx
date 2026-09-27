@@ -51,7 +51,7 @@ export default function AuthScreen() {
       <Header title={role === 'shopkeeper' ? 'Shopkeeper account' : 'Customer account'} back animate />
       <Text style={[T.body, { marginBottom: 16 }]}>
         {role === 'shopkeeper'
-          ? "You'll set up your shop next, then subscribe to Vendly Shopkeeper Pro."
+          ? "You'll set up your shop next, then start managing it right away — free."
           : 'Browse shops near you and send your first shopping list.'}
       </Text>
 

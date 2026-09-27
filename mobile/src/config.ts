@@ -1,7 +1,7 @@
 export const APP_NAME = 'Vendly';
 
 // The Node.js backend's address. EXPO_PUBLIC_ variables are safe to expose: they end up compiled
-// into the app itself. No secret (JWT signing key, database password, Razorpay key secret) is ever
+// into the app itself. No secret (JWT signing key, database password) is ever
 // read from here - those live only on the server, in backend/.env.
 export const API_BASE_URL = (process.env.EXPO_PUBLIC_API_BASE_URL ?? '').replace(/\/+$/, '');
 export const PRIVACY_URL = process.env.EXPO_PUBLIC_PRIVACY_URL ?? '';

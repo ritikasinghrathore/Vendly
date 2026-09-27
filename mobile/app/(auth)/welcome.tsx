@@ -37,7 +37,7 @@ export default function Welcome() {
           onPress={() => router.push('/auth?role=customer')}
         />
         <RoleCard
-          icon="home" color={C.butter} iconColor={C.butterDeep} title="Shopkeeper" price="₹1,000/month"
+          icon="home" color={C.butter} iconColor={C.butterDeep} title="Shopkeeper" price="Free"
           text="List your items and prices, receive shopping lists, bill accurately and track every rupee owed."
           onPress={() => router.push('/auth?role=shopkeeper')}
         />

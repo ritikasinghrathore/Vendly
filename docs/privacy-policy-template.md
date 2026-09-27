@@ -12,25 +12,21 @@ work) and have a lawyer review it before you publish. Put its address in `mobile
 * **Details you enter:** for shopkeepers — shop name, owner name, address, phone, product names and
   prices, customer names and phone numbers. For customers — shopping lists.
 * **Activity in the app:** bills, payments and khata (credit) entries, notifications.
-* **For shopkeeper subscriptions:** our payment provider (Razorpay) handles your card, UPI or bank
-  details directly — we never see or store them. We keep only the payment status, amount, and an
-  opaque reference id from Razorpay.
-* We do not collect your location or contacts, and we show no ads.
+* We do not collect your location or contacts, we show no ads, and Vendly is free to use.
 
 ## Why we use it
 To sign you in, show shops and prices, send shopping lists to the shop you choose, create bills and
-keep accurate khata records, process shopkeeper subscription payments, and keep the service secure.
+keep accurate khata records, and keep the service secure.
 
 ## Who can see it
 * A **shop** can see the shopping lists you send it, and the bills, payments and khata that belong to
   you at that shop.
 * You can see only your own information; other customers cannot see it.
-* Our service providers: [hosting provider — e.g. Render] for the server and database, and
-  [Razorpay] for processing shopkeeper subscription payments.
+* Our service providers: [hosting provider — e.g. Render] for the server and database.
 
 ## How long we keep it
-Bills, payments and khata entries are business records and are kept so shops' accounts stay accurate,
-even after a subscription lapses. Other data is kept until you delete your account.
+Bills, payments and khata entries are business records and are kept so shops' accounts stay accurate.
+Other data is kept until you delete your account.
 
 ## Your choices
 * Edit your name and phone from **Me** / **Settings**.
@@ -38,8 +34,6 @@ even after a subscription lapses. Other data is kept until you delete your accou
   erased; bills a shop already made stay with the shop, without your name. Shopkeepers: please email
   [support email] first — a shop's billing records must be kept, so shop accounts can't self-delete
   while a shop still has data.
-* Cancel a shopkeeper subscription any time from **Settings**; you keep access until the period you
-  already paid for ends.
 * Questions or complaints: [support email].
 
 ## Children

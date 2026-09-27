@@ -1,9 +1,3 @@
-export const PLAN = {
-  code: 'vendly_shopkeeper_pro',
-  name: 'Vendly Shopkeeper Pro',
-  interval: 'month' as const,
-  currency: 'INR' as const,
-};
 export const MAX_SHOPS_PER_USER = 5;
 export const MAX_IMAGES_PER_USER = 300;
 export const MAX_LOGIN_FAILURES = 5;

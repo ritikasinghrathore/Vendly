@@ -1,14 +1,12 @@
 /**
- * Creates demo accounts for local testing: a shopkeeper with one shop (subscription already marked
- * active - ONLY this script is allowed to do that directly; every other code path requires a real
- * verified webhook), a few products, and a customer account.
+ * Creates demo accounts for local testing: a shopkeeper with one shop, a few products, and a
+ * customer account. Vendly is free for both roles, so the shop is usable immediately.
  *
  * Run with: npm run seed
  */
 import { pool, withTx } from '../src/db/pool';
 import { hashPassword } from '../src/auth/password';
 import { logger } from '../src/utils/logger';
-import { env } from '../src/config/env';
 
 const DEMO_PASSWORD = 'Password123!';
 
@@ -39,23 +37,6 @@ async function main() {
     }
     const shopId = shop.id;
 
-    const sub = (await tx.query('select id from subscriptions where shop_id = $1', [shopId])).rows[0];
-    const periodEnd = new Date(Date.now() + 30 * 86_400_000);
-    const accessUntil = new Date(periodEnd.getTime() + env.SUBSCRIPTION_GRACE_DAYS * 86_400_000);
-    if (sub) {
-      await tx.query(
-        `update subscriptions set status = 'active', started_at = coalesce(started_at, now()), current_period_start = now(),
-         current_period_end = $2, access_until = $3 where id = $1`,
-        [sub.id, periodEnd.toISOString(), accessUntil.toISOString()],
-      );
-    } else {
-      await tx.query(
-        `insert into subscriptions (user_id, shop_id, provider, status, started_at, current_period_start, current_period_end, access_until)
-         values ($1,$2,$3,'active', now(), now(), $4, $5)`,
-        [ownerId, shopId, env.PAYMENT_PROVIDER, periodEnd.toISOString(), accessUntil.toISOString()],
-      );
-    }
-
     const cat = (await tx.query("select id from categories where name = 'Rice & Grains'")).rows[0];
     const catOil = (await tx.query("select id from categories where name = 'Oil & Ghee'")).rows[0];
     const catPuja = (await tx.query("select id from categories where name = 'Puja Items'")).rows[0];
@@ -85,7 +66,7 @@ async function main() {
   });
 
   console.log('\nDemo accounts (password for both): ' + DEMO_PASSWORD);
-  console.log('  Shopkeeper: owner@vendly.test    (shop: Ritika General Store, subscription already active)');
+  console.log('  Shopkeeper: owner@vendly.test    (shop: Ritika General Store, ready to manage immediately)');
   console.log('  Customer:   customer@vendly.test\n');
   await pool.end();
 }

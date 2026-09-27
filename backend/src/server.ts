@@ -3,20 +3,16 @@ import { env } from './config/env';
 import { logger } from './utils/logger';
 import { pool } from './db/pool';
 import { migrate } from './db/migrate';
-import { startExpirySweeper } from './jobs/expireSubscriptions';
 
 async function main() {
   await migrate();
   const app = createApp();
   const server = app.listen(env.PORT, () => {
-    logger.info(`Vendly API listening on port ${env.PORT} (${env.NODE_ENV}, payments: ${env.PAYMENT_PROVIDER})`);
+    logger.info(`Vendly API listening on port ${env.PORT} (${env.NODE_ENV})`);
   });
-
-  const stopSweeper = env.RUN_JOBS ? startExpirySweeper() : () => {};
 
   const shutdown = async (signal: string) => {
     logger.info(`${signal} received, shutting down`);
-    stopSweeper();
     server.close(async () => {
       await pool.end();
       process.exit(0);

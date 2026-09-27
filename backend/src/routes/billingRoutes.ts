@@ -1,14 +1,13 @@
 import { Router } from 'express';
 import { requireAuth, requireRole } from '../middleware/auth';
 import { loadShopMembership } from '../middleware/shop';
-import { requireActiveSubscription } from '../middleware/subscription';
 import { validate } from '../middleware/validate';
 import { createBillSchema, createCustomerSchema, recordAdjustmentSchema, recordPaymentSchema } from '../validators/billing';
 import * as ctrl from '../controllers/billingController';
 
-/** Mounted at /api/v1/shops/:shopId - owner-side billing/khata management, all subscription-gated. */
+/** Mounted at /api/v1/shops/:shopId - owner-side billing/khata management. */
 export const shopBillingRoutes = Router({ mergeParams: true });
-shopBillingRoutes.use(requireAuth, requireRole('shopkeeper'), loadShopMembership, requireActiveSubscription);
+shopBillingRoutes.use(requireAuth, requireRole('shopkeeper'), loadShopMembership);
 shopBillingRoutes.get('/customers', ctrl.listCustomers);
 shopBillingRoutes.get('/customers/search', ctrl.searchCustomers);
 shopBillingRoutes.post('/customers', validate(createCustomerSchema), ctrl.addCustomer);

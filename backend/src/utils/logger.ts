@@ -5,7 +5,7 @@ export const logger = pino({
   level: env.LOG_LEVEL,
   redact: {
     paths: [
-      'req.headers.authorization', 'req.headers.cookie', 'req.headers["x-razorpay-signature"]',
+      'req.headers.authorization', 'req.headers.cookie',
       'password', '*.password', '*.refreshToken', '*.accessToken',
     ],
     remove: true,

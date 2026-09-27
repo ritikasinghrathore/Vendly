@@ -26,7 +26,7 @@ function SetupNeeded() {
 }
 
 function Gate() {
-  const { loading, loadError, user, shops, activeShop, subscription, refresh, signOut } = useAuth();
+  const { loading, loadError, user, shops, refresh, signOut } = useAuth();
   const segments = useSegments() as string[];
   const router = useRouter();
   const navReady = !!useRootNavigationState()?.key;
@@ -44,9 +44,7 @@ function Gate() {
       if (seg1 !== 'welcome') target = '/welcome';
     } else if (user.role === 'shopkeeper' && shops.length === 0) {
       if (seg1 !== 'create-shop') target = '/create-shop';
-    } else if (user.role === 'shopkeeper' && activeShop && subscription && !subscription.hasAccess) {
-      if (seg0 !== 'subscribe') target = '/subscribe';
-    } else if (!seg0 || seg0 === '(auth)' || seg0 === 'auth' || seg0 === 'subscribe') {
+    } else if (!seg0 || seg0 === '(auth)' || seg0 === 'auth') {
       target = home;
     } else if (user.role === 'shopkeeper' && seg0 === '(customer)') {
       target = home;
@@ -54,7 +52,7 @@ function Gate() {
       target = home;
     }
     if (target) router.replace(target as any);
-  }, [loading, loadError, navReady, user, shops.length, activeShop?.id, subscription?.hasAccess, seg0, seg1]);
+  }, [loading, loadError, navReady, user, shops.length, seg0, seg1]);
 
   return (
     <View style={{ flex: 1, backgroundColor: C.bg }}>

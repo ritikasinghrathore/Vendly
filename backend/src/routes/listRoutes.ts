@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import { requireAuth, requireRole } from '../middleware/auth';
 import { loadShopMembership } from '../middleware/shop';
-import { requireActiveSubscription } from '../middleware/subscription';
 import { validate } from '../middleware/validate';
 import { setListItemSchema, setListNotesSchema } from '../validators/lists';
 import * as ctrl from '../controllers/listController';
@@ -20,5 +19,5 @@ export const shopListRoutes = Router({ mergeParams: true });
 shopListRoutes.use(requireAuth);
 shopListRoutes.get('/draft', requireRole('customer'), ctrl.myDraft);
 shopListRoutes.put('/draft/items', requireRole('customer'), validate(setListItemSchema), ctrl.setItem);
-shopListRoutes.get('/incoming', requireRole('shopkeeper'), loadShopMembership, requireActiveSubscription, ctrl.incoming);
-shopListRoutes.post('/:listId/view', requireRole('shopkeeper'), loadShopMembership, requireActiveSubscription, ctrl.markViewed);
+shopListRoutes.get('/incoming', requireRole('shopkeeper'), loadShopMembership, ctrl.incoming);
+shopListRoutes.post('/:listId/view', requireRole('shopkeeper'), loadShopMembership, ctrl.markViewed);

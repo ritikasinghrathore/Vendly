@@ -14,8 +14,6 @@
     "migrate": "tsx src/db/migrate.ts",
     "migrate:prod": "node dist/db/migrate.js",
     "seed": "tsx scripts/seed.ts",
-    "razorpay:create-plan": "tsx scripts/create-razorpay-plan.ts",
-    "webhook:simulate": "tsx scripts/simulate-webhook.ts",
     "test": "tsx --test tests/unit/*.test.ts",
     "test:integration": "tsx --test tests/integration/*.test.ts",
     "typecheck": "tsc --noEmit"
@@ -31,14 +29,13 @@
     "pg": "^8.13.1",
     "pino": "^9.5.0",
     "pino-http": "^10.3.0",
-    "razorpay": "^2.9.5",
     "zod": "^3.24.1"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.7",
-    "@types/node": "^22.20.4",
+    "@types/node": "^22.10.0",
     "@types/pg": "^8.11.10",
     "pino-pretty": "^13.0.0",
     "tsx": "^4.19.2",

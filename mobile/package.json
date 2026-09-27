@@ -26,7 +26,6 @@
     "expo-secure-store": "latest",
     "expo-splash-screen": "latest",
     "expo-status-bar": "latest",
-    "expo-web-browser": "latest",
     "react": "19.2.3",
     "react-native": "0.86.3",
     "react-native-reanimated": "latest",

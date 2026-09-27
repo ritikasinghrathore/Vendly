@@ -1,7 +1,5 @@
 import { withTx } from '../db/pool';
 import * as shopRepo from '../repositories/shopRepo';
-import * as subscriptionRepo from '../repositories/subscriptionRepo';
-import { env } from '../config/env';
 import { MAX_SHOPS_PER_USER } from '../config/constants';
 import { badRequest } from '../utils/errors';
 
@@ -22,15 +20,6 @@ export async function createShop(ownerUserId: string, input: Record<string, unkn
       city: input.city, state: input.state, pincode: input.pincode,
     }, tx);
     await shopRepo.addShopMember(shop!.id, ownerUserId, 'owner', tx);
-
-    // Every new shop gets a subscription row from day one, in "incomplete" status - the single place
-    // access checks look, right from shop creation, with no separate provisioning step later.
-    const trialDays = env.TRIAL_DAYS;
-    const sub = await subscriptionRepo.insertSubscription({ userId: ownerUserId, shopId: shop!.id, provider: env.PAYMENT_PROVIDER }, tx);
-    if (trialDays > 0) {
-      const trialEnd = new Date(Date.now() + trialDays * 86_400_000);
-      await subscriptionRepo.updateSubscription(sub!.id, { status: 'trial', trial_ends_at: trialEnd.toISOString(), access_until: trialEnd.toISOString() }, tx);
-    }
     return shop!;
   });
 }

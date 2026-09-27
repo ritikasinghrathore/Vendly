@@ -1,6 +1,5 @@
 import { asyncHandler } from '../utils/asyncHandler';
 import * as shopService from '../services/shopService';
-import * as subscriptionService from '../services/subscriptionService';
 import { query as dbq } from '../db/pool';
 
 export const create = asyncHandler(async (req, res) => {
@@ -49,6 +48,3 @@ export const salesSummary = asyncHandler(async (req, res) => {
   );
   res.json({ days: rows });
 });
-export const subscriptionStatus = asyncHandler(async (req, res) => res.json(await subscriptionService.getStatus(req.shop!.id)));
-export const startCheckout = asyncHandler(async (req, res) => res.json(await subscriptionService.startCheckout(req.shop!.id, req.auth!.userId)));
-export const cancelSubscription = asyncHandler(async (req, res) => res.json(await subscriptionService.cancel(req.shop!.id)));

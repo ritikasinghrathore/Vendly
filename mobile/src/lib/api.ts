@@ -48,12 +48,6 @@ export async function updateShop(id: string, patch: Partial<ShopInput> & { isOpe
   return withLogoUrl(shop);
 }
 
-// ---------------------------------------------------------------- subscription
-export interface SubscriptionStatus { status: string; hasAccess: boolean; accessUntil: string | null; currentPeriodEnd: string | null; cancelAtPeriodEnd: boolean; checkoutUrl: string | null }
-export const getSubscription = (shopId: string) => apiGet<SubscriptionStatus>(`/api/v1/shops/${shopId}/subscription`);
-export const startSubscriptionCheckout = (shopId: string) => apiPost<{ checkoutUrl: string }>(`/api/v1/shops/${shopId}/subscription/checkout`);
-export const cancelSubscription = (shopId: string) => apiPost<{ message: string }>(`/api/v1/shops/${shopId}/subscription/cancel`);
-
 // ---------------------------------------------------------------- products
 export const listCategories = () => apiGet<{ categories: Category[] }>('/api/v1/categories').then((r) => r.categories);
 function withProductImage<T extends { image_id?: string | null }>(p: T): T & { image_url: string | null } {
