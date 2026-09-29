@@ -338,7 +338,6 @@ create trigger inventory_touch      before update on inventory       for each ro
 create trigger shop_customers_touch before update on shop_customers for each row execute function touch_updated_at();
 create trigger lists_touch          before update on shopping_lists  for each row execute function touch_updated_at();
 create trigger bills_touch          before update on bills           for each row execute function touch_updated_at();
-create trigger payments_touch       before update on payments        for each row execute function touch_updated_at();
 
 -- Money records are permanent.
 create or replace function forbid_change() returns trigger language plpgsql as $$

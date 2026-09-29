@@ -7,10 +7,16 @@
 import { pool, withTx } from '../src/db/pool';
 import { hashPassword } from '../src/auth/password';
 import { logger } from '../src/utils/logger';
+import { env } from '../src/config/env';
 
 const DEMO_PASSWORD = 'Password123!';
 
 async function main() {
+  // The demo accounts below have a publicly known password: never create them on a live database.
+  if (env.NODE_ENV === 'production') {
+    console.error('Refusing to create demo accounts because NODE_ENV=production.');
+    process.exit(1);
+  }
   await withTx(async (tx) => {
     const shopkeeper = await tx.query(
       `insert into users (email, password_hash, name, phone, role) values ($1,$2,$3,$4,'shopkeeper')
