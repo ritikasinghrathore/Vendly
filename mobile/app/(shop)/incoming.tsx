@@ -49,7 +49,7 @@ export default function Incoming() {
               <Badge label={l.status === 'submitted' ? 'New' : 'Seen'} tone={l.status === 'submitted' ? 'gold' : 'plum'} />
             </View>
             <View style={{ marginTop: 10, gap: 3 }}>
-              {shown.map((it) => (
+              {shown.map((it: { id: string; product_name_snapshot: string; quantity: number; unit: keyof typeof UNIT_LABEL }) => (
                 <Text key={it.id} style={T.body}>• {it.product_name_snapshot} × {formatQty(it.quantity)} {UNIT_LABEL[it.unit]}</Text>
               ))}
               {open !== l.id && items.length > 3 ? <Text style={T.small}>+ {items.length - 3} more</Text> : null}

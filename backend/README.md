@@ -165,31 +165,18 @@ POST   /images 🔒                    GET /images/:id (public, opaque id)
 
 ---
 
-## 7. Production deployment (Render + Neon, both free)
+## 7. Production deployment (Render)
 
-**Use a permanent free database.** Render's own free Postgres is deleted 30 days after it's created,
-which would wipe real customers' bills and khata. **Neon** (neon.tech) has a genuinely permanent free
-Postgres (no card, no expiry — it just sleeps when idle and wakes on the next request).
-
-1. **Database:** on neon.tech create a project. Copy its connection string and use the **direct**
-   host (the one *without* `-pooler` in the name) — the migration step takes a lock that the pooled
-   host can silently break. Use `?sslmode=verify-full` at the end.
-2. **Server:** on Render → New → Blueprint → pick your repository (uses `render.yaml`). When it asks,
-   paste the Neon string as `DATABASE_URL`, and set `PUBLIC_BASE_URL` to the service's own
-   `https://<name>.onrender.com` address (Render shows it once the service exists).
-3. Every deploy runs `node dist/db/migrate.js && node dist/server.js`: new migrations are applied
-   automatically, and ones already applied are skipped (tracked in the `schema_migrations` table).
-4. **Do not run `npm run seed` against production** — it creates demo accounts with a publicly known
-   password. Real users just register in the app; the default categories come from migration 002.
-
-Free-tier things to know: Render's free server sleeps after 15 minutes idle (the next request takes
-about a minute to wake it), and Neon's free storage is about 0.5 GB. Shop/product pictures are stored
-in the database (max 2 MB each), so many large pictures will use that up faster than text data does.
+The repository root has `render.yaml` (a "Blueprint"). Render → New → Blueprint → point at your repo.
+It provisions a free Postgres database and a web service together, wires `DATABASE_URL` automatically,
+and runs migrations on every deploy (`node dist/db/migrate.js && node dist/server.js`). You only need
+to set `PUBLIC_BASE_URL` yourself in the Render dashboard, to the service's own `https://...` URL
+(Render shows it once the service is created).
 
 **Anywhere else that runs Node** (Railway, Fly.io, a VPS, ...): build with `npm run build`, provide
 `DATABASE_URL` pointing at a Postgres 14+ instance, and set the same environment variables as local
-dev but with `NODE_ENV=production` and `DATABASE_SSL=true`. `npm run build && npm start` runs
-migrations then starts the server.
+dev but with `NODE_ENV=production` and `DATABASE_SSL=true` (most managed Postgres requires it).
+`npm run build && npm start` runs migrations then starts the server.
 
 Point the mobile app's `EXPO_PUBLIC_API_BASE_URL` at your deployed API's `https://` address and
 rebuild (see `../mobile/README.md`).

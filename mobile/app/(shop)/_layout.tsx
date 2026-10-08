@@ -10,7 +10,7 @@ export default function ShopTabs() {
   const { activeShop } = useAuth();
   if (!activeShop) return null; // signing out: nothing to show
   const icon = (name: React.ComponentProps<typeof Feather>['name']) =>
-    ({ color, size }: { color: string; size: number }) => <Feather name={name} color={color} size={size} />;
+    ({ color, size }: { color: React.ComponentProps<typeof Feather>['color']; size: number }) => <Feather name={name} color={color} size={size} />;
   return (
     <Tabs screenOptions={{
       headerShown: false,
