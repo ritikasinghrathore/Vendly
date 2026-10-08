@@ -28,10 +28,10 @@
     "expo-status-bar": "latest",
     "react": "19.2.3",
     "react-native": "0.86.3",
-    "react-native-reanimated": "latest",
+    "react-native-reanimated": "~4.1.1",
     "react-native-safe-area-context": "latest",
     "react-native-screens": "latest",
-    "react-native-worklets": "latest"
+    "react-native-worklets": "^0.8.3"
   },
   "devDependencies": {
     "@types/react": "latest",
