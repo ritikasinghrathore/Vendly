@@ -16,7 +16,10 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#E8DDF5"
-      }
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "plugins": [
       "expo-router",
@@ -36,6 +39,13 @@
           "photosPermission": "Vendly needs your photos so you can add a picture of your shop or product."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "5762b1c6-47a0-4983-812e-132436f592be"
+      }
+    },
+    "owner": "ritikasingh12"
   }
 }
